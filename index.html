@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="ja"><head>
+<meta name="robots" content="noindex"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>tONE mock v2</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#efe9e1;font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;color:#2c2a28}
+#app{max-width:420px;margin:0 auto;min-height:100vh;background:#faf7f2;padding:14px 14px 90px}
+h1{font-size:22px;margin:0}h1 b{color:#d9825b}h2{font-size:16px;margin:16px 0 8px}.muted{color:#8a827a;font-size:13px}
+.card{background:#fff;border-radius:14px;padding:12px;margin:8px 0;box-shadow:0 1px 3px #0001}
+.lbl{font-size:12px;color:#d9825b;font-weight:700;margin-bottom:4px}
+.btn{border:0;border-radius:10px;background:#d9825b;color:#fff;padding:10px 14px;font-size:14px;font-weight:700}
+.btn.ghost{background:#fbeee6;color:#b5633f}.btn.sm{padding:7px 10px;font-size:13px}.btn.done{background:#e3efe3;color:#4b7a4b}.btn.w{width:100%;margin-top:8px}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;display:flex;background:#fff;border-top:1px solid #eee;z-index:9}
+.nav button{flex:1;border:0;background:none;padding:8px 0 12px;font-size:11px;color:#8a827a}.nav button i{display:block;font-style:normal;font-size:20px}.nav .on{color:#d9825b;font-weight:700}
+.datebar{display:flex;align-items:center;justify-content:space-between;margin:8px 0}.datebar button{border:0;background:#fff;border-radius:50%;width:36px;height:36px;font-size:18px;box-shadow:0 1px 3px #0002}
+.hr{display:flex;min-height:30px;border-top:1px dashed #e4ddd4}.hr>span{width:42px;font-size:11px;color:#a59c92;padding-top:2px}.hr>div{flex:1;padding:3px 0}
+.it{border-radius:10px;padding:8px 10px;margin:3px 0;font-size:14px;background:#fff;box-shadow:0 1px 2px #0001;border-left:4px solid #9bbf9b}
+.it.ev{background:#e9eef8;border-left-color:#5b7fd9}.it.ln{border-left-color:#5b7fd9;background:#f6f8fd}.it.out{background:#eef7ee;border-left-color:#4b9a4b}
+.it .row{display:flex;align-items:center;gap:8px}.it .tt{flex:1}.tm{font-size:11px;color:#8a827a}.tagl{font-size:11px;background:#5b7fd9;color:#fff;border-radius:6px;padding:1px 6px;margin-right:4px}
+.pg{font-size:12px;color:#4b7a4b;font-weight:700}.prog{height:4px;background:#eee;border-radius:2px;margin-top:5px}.prog i{display:block;height:4px;background:#9bbf9b;border-radius:2px}
+.steps{margin-top:6px}.steps label{display:flex;gap:8px;align-items:center;padding:6px 0;border-top:1px solid #f0ebe5;font-size:13px}.steps input,.chk{width:20px;height:20px;accent-color:#d9825b}
+.d{text-decoration:line-through;color:#aaa}.hl{background:#fff1c9;border-radius:4px;padding:0 4px;font-weight:700}
+.sheet{position:fixed;inset:0;background:#0006;z-index:20;display:flex;align-items:flex-end;justify-content:center}.sheet>div{background:#faf7f2;width:100%;max-width:420px;border-radius:18px 18px 0 0;padding:16px;max-height:88vh;overflow:auto}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.chip{border:1px solid #e0d6cc;background:#fff;border-radius:16px;padding:7px 11px;font-size:13px}.chip.on{background:#d9825b;color:#fff;border-color:#d9825b}
+input[type=time],input[type=text],select{font-size:15px;padding:8px;border:1px solid #ddd;border-radius:8px;background:#fff}
+.fab{display:flex;gap:8px;margin:10px 0}.fab .btn{flex:1}
+.msg{max-width:85%;padding:9px 12px;border-radius:14px;margin:6px 0;font-size:14px;line-height:1.5}.me{background:#d9825b;color:#fff;margin-left:auto;border-bottom-right-radius:4px}.bot{background:#fff;box-shadow:0 1px 2px #0001;border-bottom-left-radius:4px}
+.chatin{position:fixed;bottom:62px;left:50%;transform:translateX(-50%);width:100%;max-width:420px;display:flex;gap:6px;padding:8px 12px;background:#faf7f2}.chatin input{flex:1}
+.opt{display:block;width:100%;text-align:left;border:1px solid #e0d6cc;background:#fff;border-radius:12px;padding:14px;margin:8px 0;font-size:15px}
+.entry{display:flex;align-items:center;gap:10px;font-size:15px}.ic{font-size:24px}.bar{height:6px;background:#eee;border-radius:3px;margin:8px 0}.bar i{display:block;height:6px;background:#d9825b;border-radius:3px}
+.back{border:0;background:none;color:#8a827a;font-size:14px;padding:0}
+.ai{background:linear-gradient(135deg,#fff,#fdf0e8)}
+.grp{border:1px solid #c9d5f2;border-radius:12px;padding:8px;margin:8px 0;background:#fff}.grp h4{margin:0 0 4px;font-size:13px;color:#5b7fd9}
+</style></head><body><div id="app"></div><div class="nav" id="nav"></div><div id="sh"></div>
+<script>
+const E=[
+{id:'tense',ic:'🌧',t:'空気が重い・ちょっと揉めている',
+ q:[['気になっていること',['会話が少ない','言い方がきつい','家事の分担で揉めた','理由がわからない']],['子どもの年代',['0〜1歳','2〜3歳','4〜6歳','小学生']],['いまの余力',['けっこうある','ふつう','ほぼない']]],
+ a:{s:'寝不足や家事の積み重ねで、パートナーは「わかってほしい」気持ちがたまっているのかもしれません。どちらが悪いという話ではなく、少し疲れが重なっている状態です。',
+ m:['寝かしつけを代わって、30分ひとりの時間をつくる','洗い物と明日の準備を黙ってすませる','今日は何もしない。そっとしておくのもOK'],
+ v:'「最近ずっと任せきりだったね。今日はこっちやるから休んで」',t:'朝、ひとことだけ「昨日ありがとう」と伝える'}},
+{id:'free',ic:'🍻',t:'揉めずに自分の時間がほしい',
+ q:[['やりたいこと',['飲み会に行きたい','趣味・運動','ひとりで休みたい']],['いつ',['今週','来週','まだ未定']],['いまの余力',['けっこうある','ふつう','ほぼない']]],
+ a:{s:'パートナーは「行くこと」より「その日ひとりで回す負担」が気になるのかもしれません。先に負担を減らす段取りを見せると、話しやすくなります。',
+ m:['前日に夕飯を作り置きしておく（2食分）','当日の朝、お風呂・寝かしつけの段取りを紙に書く','今日は切り出さない。まず週末に家事を1つ多く持つ'],
+ v:'「来週木曜に飲み会があるんだけど、前の日にカレー作っておくし、その週末は午前中ひとりで出かけていいよ。どうかな？」',t:'カレンダーで候補日を見て、パートナーの予定と重ならないか確認'}},
+{id:'rhythm',ic:'🌊',t:'家庭のリズムをもっとよくしたい',
+ q:[['気になる時間帯',['朝のバタバタ','夕方〜夕飯','寝かしつけ','週末']],['子どもの年代',['0〜1歳','2〜3歳','4〜6歳','小学生']],['いまの余力',['けっこうある','ふつう','ほぼない']]],
+ a:{s:'夕方〜夜に「誰が何をやるか」が決まっていないと、パートナーに負担が寄りがちかもしれません。仕組みを1つ決めるだけで回りやすくなります。',
+ m:['「お風呂はパパ」など担当を1つだけ固定する','明日の朝の準備（服・水筒）を夜のうちにやる','今日は何もしない。観察だけでもOK'],
+ v:'「夜のこと、どこか1つ自分の担当にしたいんだけど、どれが一番助かる？」',t:'担当を1つ決めて、1週間続けてみる'}},
+{id:'vague',ic:'💭',t:'うまく言えない',
+ q:[['いちばん近いのは',['なんとなくモヤモヤ','自分が疲れている','パートナーが疲れていそう','子どものこと']],['いつから',['今日','ここ数日','ずっと']],['いまの余力',['けっこうある','ふつう','ほぼない']]],
+ a:{s:'言葉にならないモヤモヤは、自分もパートナーも少し余裕が減っているサインかもしれません。まず自分の余白を少し戻すのが先です。',
+ m:['10分だけ散歩して頭を空にする','パートナーに「最近どう？」とだけ聞く','今日は何もしない。早めに寝るのもOK'],
+ v:'「なんか最近お互いバタバタだよね。何か減らせることあるかな」',t:'気になったことを1行メモしてtONEに話す'}}];
+
+// ===== templates =====
+const GARB={1:'可燃ごみ',2:'',3:'プラスチック',4:'可燃ごみ',5:'ビン・缶',6:'',0:''};
+const WD='日月火水木金土';
+const TPL={
+ gomi:{t:'ゴミ捨て',ic:'🗑',s:[['今日は何のゴミの日か確認（{G}）',1],['家中のゴミを集める（台所・洗面所・子ども部屋）',5],['ゴミ袋の口をしばって玄関へ',2],['集積所へ捨てに行く（8:30まで）',5],['新しいゴミ袋を各ゴミ箱にセット',3]]},
+ sentaku:{t:'洗濯',ic:'👕',s:[['洗濯物を色・ネットで仕分け',3],['洗剤を入れて洗濯機スタート',2],['干す（子ども服はハンガーで）',12],['取り込んでたたむ',10],['各自の引き出しにしまう',5]]},
+ shokki:{t:'食器洗い',ic:'🍽',s:[['シンクの食器を集める',2],['洗う（子どもの食器・水筒も）',12],['水切りかごへ／食洗機スタート',2],['シンクと排水口をさっと掃除',3]]},
+ furo:{t:'お風呂',ic:'🛁',s:[['お湯張りスタート',1],['着替え・タオル・保湿剤を準備',3],['子どもと入浴',20],['体をふいて保湿・着替え',8],['浴槽のお湯を抜いて浴室をさっと流す',3]]},
+ hoiku:{t:'保育園の送り準備',ic:'🎒',s:[['連絡帳を書く（体温・朝ごはん）',3],['着替え・オムツ・タオルを補充',5],['水筒にお茶を入れる',2],['上履き・帽子を確認',1],['送り出し',15]]},
+ neka:{t:'寝かしつけ',ic:'🌙',s:[['部屋を暗く・室温を整える',2],['歯みがき・トイレ',5],['絵本を1〜2冊読む',10],['添い寝して静かに待つ',20]]},
+ asa:{t:'朝食づくり',ic:'🍳',s:[['パン・ごはんの準備',5],['卵焼き・汁物',10],['子どもの分を取り分け',3],['片付け',7]]},
+ tsukuri:{t:'作り置き（2食分）',ic:'🍛',s:[['冷蔵庫を見て献立を決める',3],['買い出し',30],['カレー等を作る',40],['保存容器に分けてラベル',5]]},
+};
+function gtoday(d){const g=GARB[new Date(d).getDay()];return g||'今日は収集なし'}
+function mk(k,date,start,extra){const T=TPL[k];return Object.assign({id:uid(),date,start,type:'task',t:T.t,ic:T.ic,tpl:k,steps:T.s.map(([t,m])=>({t:t.replace('{G}',gtoday(date)),m,d:false})),open:false},extra||{})}
+// ===== storage =====
+const K='tone2_';const L={get:(k,d)=>JSON.parse(localStorage.getItem(K+k)||JSON.stringify(d??[])),set:(k,v)=>localStorage.setItem(K+k,JSON.stringify(v))};
+let uidn=Date.now();function uid(){return 'i'+(uidn++)}
+const ds=d=>{const z=new Date(d);return z.getFullYear()+'-'+String(z.getMonth()+1).padStart(2,'0')+'-'+String(z.getDate()).padStart(2,'0')};
+const TODAY=ds(new Date());function addD(s,n){const d=new Date(s+'T12:00');d.setDate(d.getDate()+n);return ds(d)}
+function seed(){if(localStorage.getItem(K+'seeded'))return;const t=TODAY,g=gtoday(t);
+ const it=[mk('hoiku',t,'07:30'),mk('gomi',t,'08:00'),{id:uid(),date:t,start:'09:00',end:'18:00',type:'event',t:'仕事'},mk('sentaku',t,'18:45'),mk('furo',t,'19:30'),mk('neka',t,'20:30'),mk('shokki',t,'21:15')];
+ it[0].steps[0].d=true;it[0].steps[1].d=true;it[1].open=true;it[1].steps[0].d=true;
+ it.push({id:uid(),date:addD(t,1),start:'10:00',end:'11:00',type:'event',t:'子どもの検診'});L.set('items',it);localStorage.setItem(K+'seeded','1')}
+seed();
+let S={tab:'today',date:TODAY,chat:L.get('chat',[{b:1,t:'こんにちは、tONEです。今日のこと、なんでも話してください。「飲み会」「疲れた」「ゴミ」「休日」「機嫌」などで試せます。'}]),e:null,qi:0,ans:[],sheet:null,out:{}};
+const items=()=>L.get('items');const save=v=>L.set('items',v);
+function upd(id,f){const v=items();const x=v.find(i=>i.id==id);if(x)f(x);save(v);render()}
+// ===== proposals for events =====
+const EVP={
+ nomi:{t:'飲み会',s:'19:00',e:'22:00',pre:[[-1,'20:00','作り置き（2食分）','tsukuri'],[-1,'21:30','妻に当日の段取りを共有（お迎え・夕飯・お風呂）'],[0,'07:30','お風呂担当を交代してもらうお願い＋お礼'],[0,'17:30','帰宅予定時刻をLINEで連絡']],post:[[1,'06:30','翌朝の朝食担当','asa'],[1,'07:00','「昨日ありがとう、助かった」と声かけ'],[1,'18:30','今夜の寝かしつけ担当','neka']]},
+ golf:{t:'ゴルフ',s:'06:00',e:'15:00',pre:[[-2,'21:00','妻に日程共有・週末の予定確認'],[-1,'20:00','ゴルフ道具を玄関にまとめる（朝静かに出る）'],[-1,'21:00','翌日の子どもの朝食を準備']],post:[[0,'16:00','帰宅後すぐ子どもと公園（妻の休憩時間）'],[0,'19:30','お風呂担当','furo'],[1,'08:00','妻に半日フリー時間をプレゼント']]},
+ early:{t:'早朝出勤',s:'06:30',e:'18:00',pre:[[-1,'21:00','保育園の送り準備を前夜にすませる','hoiku'],[-1,'21:30','ゴミをまとめて玄関へ（朝は出せないと共有）'],[-1,'22:00','妻に送り担当の交代をお願い']],post:[[0,'19:00','夕飯の片付け担当','shokki'],[0,'20:30','寝かしつけ担当','neka']]},
+};
+function propose(kind,date,s,e,title){const P=EVP[kind];const ev={id:uid(),date,start:s,end:e,type:'event',t:title||P.t};
+ const m=(a,ph)=>a.map(([o,tm,t,k])=>({o,tm,t,k,ph,on:true}));S.sheet={kind:'prop',ev,list:[...m(P.pre,'事前'),...m(P.post,'事後')]};render()}
+function commitProp(){const sh=S.sheet,v=items();v.push(sh.ev);sh.list.filter(x=>x.on).forEach(x=>{const d=addD(sh.ev.date,x.o);
+ const base=x.k?mk(x.k,d,x.tm):{id:uid(),date:d,start:x.tm,type:'task',t:x.t,ic:'✅',steps:[]};base.t=x.t;base.link=sh.ev.id;base.lt=sh.ev.t;base.ph=x.ph;v.push(base)});
+ save(v);S.sheet=null;S.date=sh.ev.date;go('today')}
+function dl(o){return o==0?'当日':o<0?(o==-1?'前日':(-o)+'日前'):(o==1?'翌日':o+'日後')}
+// ===== AI =====
+const AIR=[
+ [/飲み/,'飲み会、いいですね。行くこと自体より「その日ひとりで回す負担」が気になるかもしれません。先に段取りを見せると話しやすいです。',[['前日に作り置き（2食分）','tsukuri',-0,'20:00'],['妻に当日の段取りを共有','',0,'21:00']],'nomi'],
+ [/疲れ/,'おつかれさまです。今日は全部やらなくて大丈夫。いちばん効く1つだけにしましょう。',[['食器洗いだけ担当する（15分）','shokki',0,'21:15'],['22:30には寝る','',0,'22:30']]],
+ [/ゴミ|ごみ/,()=>`今日は<span class="hl">${gtoday(S.date)}</span>の日です。前の晩に集めておくと朝がラクです。`,[['ゴミ捨て（5ステップ）','gomi',0,'07:45'],['新しいゴミ袋の在庫チェック','',0,'21:00']]],
+ [/休日|週末|土日/,'休日は「午前はパパ、午後は家族」で分けると、妻のひとり時間が作れます。',[['午前中、子どもと公園へ（2時間）','',0,'09:30'],['お昼ごはん担当','',0,'12:00']]],
+ [/機嫌/,'理由はわからなくても、疲れが重なっているのかもしれません。言葉より先に、負担を1つ黙って引き受けるのがおすすめです。',[['寝かしつけを代わる','neka',0,'20:30'],['「今日はこっちやるから休んで」と声をかける','',0,'19:00']]],
+];
+function ask(txt){if(!txt.trim())return;const c=S.chat;c.push({t:txt});const r=AIR.find(r=>r[0].test(txt));
+ if(r)c.push({b:1,t:typeof r[1]=='function'?r[1]():r[1],p:r[2],ev:r[3]});else c.push({b:1,t:'なるほど。いまの状況にいちばん近いのは「飲み会」「疲れた」「ゴミ」「休日」「機嫌」のどれでしょう？（モックのため決まった返答です）'});
+ L.set('chat',c);render();setTimeout(()=>scrollTo(0,9e9),10)}
+function addOne(t,k,o,tm,btn,date){const v=items();const d=addD(date||S.date,o||0);const x=k?mk(k,d,tm):{id:uid(),date:d,start:tm,type:'task',t,ic:'✅',steps:[]};x.t=t;v.push(x);save(v);if(btn){btn.textContent='✓ カレンダーに入れました';btn.className='btn sm done'}}
+function aiToday(){const g=GARB[new Date(S.date+'T12:00').getDay()];const v=items().filter(i=>i.date==S.date);const ev=v.filter(i=>i.type=='event');
+ const a=[];if(g)a.push([`今日は<span class="hl">${g}</span>の日。8:30までに出しましょう`,'ゴミ捨て','gomi','07:45']);
+ a.push(['18:00〜18:45が空いています。15分でできる「食器洗い」を先にどうですか？','食器洗い','shokki','18:15']);
+ if(!ev.some(e=>/飲み|ゴルフ/.test(e.t)))a.push(['今週末、妻に半日のひとり時間を。午前に子どもとお出かけは？','','','']);return a}
+// ===== render =====
+function go(t){S.tab=t;S.e=null;render();scrollTo(0,0)}
+function nav(){const T=[['today','📅','今日'],['ai','💬','AI相談'],['nayami','🌧','悩みから'],['out','🚲','お出かけ'],['rec','✍','記録']];
+ document.getElementById('nav').innerHTML=T.map(([k,i,l])=>`<button class="${S.tab==k?'on':''}" onclick="go('${k}')"><i>${i}</i>${l}</button>`).join('')}
+function itemH(x){x.steps=x.steps||[];const n=x.steps.length,c=x.steps.filter(s=>s.d).length,mins=x.steps.reduce((a,s)=>a+s.m,0);
+ if(x.type=='event')return `<div class="it ev"><div class="row"><div class="tt"><b>📌 ${x.t}</b><div class="tm">${x.start}〜${x.end||''}・予定</div></div><button class="btn sm ghost" onclick="delIt('${x.id}')">✕</button></div></div>`;
+ const done=n?c==n:x.done;
+ return `<div class="it ${x.link?'ln':''} ${x.out?'out':''}"><div class="row">${n?'':`<input type="checkbox" class="chk" ${x.done?'checked':''} onchange="upd('${x.id}',i=>i.done=!i.done)">`}
+ <div class="tt" onclick="upd('${x.id}',i=>i.open=!i.open)">${x.link?`<span class="tagl">🔗${x.lt}・${x.ph}</span><br>`:''}<span class="${done?'d':''}">${x.ic||''} ${x.t}</span><div class="tm">${x.start}${mins?'・約'+mins+'分':''}${n?'・タップで手順':''}</div></div>${n?`<span class="pg">${c}/${n}</span>`:''}</div>
+ ${n?`<div class="prog"><i style="width:${c/n*100}%"></i></div>`:''}
+ ${x.open&&n?`<div class="steps">${x.steps.map((s,j)=>`<label><input type="checkbox" ${s.d?'checked':''} onchange="upd('${x.id}',i=>i.steps[${j}].d=!i.steps[${j}].d)"><span class="${s.d?'d':''}" style="flex:1">${j+1}. ${s.t}</span><span class="tm">${s.m}分</span></label>`).join('')}<button class="btn sm ghost" style="margin-top:6px" onclick="delIt('${x.id}')">削除</button></div>`:''}</div>`}
+function delIt(id){save(items().filter(i=>i.id!=id));render()}
+function render(){nav();let h='';const t=S.tab;
+ if(t=='today'){const v=items().filter(i=>i.date==S.date).sort((a,b)=>a.start.localeCompare(b.start));const d=new Date(S.date+'T12:00');
+  const tasks=v.filter(i=>i.type=='task');let allS=0,doneS=0;tasks.forEach(x=>{if((x.steps||[]).length){allS+=x.steps.length;doneS+=x.steps.filter(s=>s.d).length}else{allS++;doneS+=x.done?1:0}});
+  h=`<h1>t<b>ONE</b></h1><div class="datebar"><button onclick="S.date=addD(S.date,-1);render()">‹</button><div style="text-align:center"><b>${d.getMonth()+1}月${d.getDate()}日（${WD[d.getDay()]}）</b>${S.date==TODAY?' <span class="muted">今日</span>':''}<div class="muted">🗑 ${gtoday(S.date)}・進み ${doneS}/${allS}</div></div><button onclick="S.date=addD(S.date,1);render()">›</button></div>
+  <div class="card ai"><div class="lbl">✨ AIの今日の提案</div>${aiToday().map(([m,tt,k,tm])=>`<div style="font-size:13px;margin:6px 0">${m}${tt?`<br><button class="btn sm ghost" onclick="addOne('${tt}','${k}',0,'${tm}',this)">＋ カレンダーに入れる</button>`:`<br><button class="btn sm ghost" onclick="go('out')">お出かけを考える →</button>`}</div>`).join('')}</div>
+  <div class="fab"><button class="btn" onclick="S.sheet={kind:'task'};render()">＋ 家事タスク</button><button class="btn ghost" onclick="S.sheet={kind:'ev',p:'nomi'};render()">＋ 予定</button></div>`;
+  for(let hr=6;hr<=23;hr++){const hh=String(hr).padStart(2,'0');const its=v.filter(i=>i.start.slice(0,2)==hh);
+   const busy=v.filter(i=>i.type=='event'&&i.start.slice(0,2)<hh&&(i.end||'').slice(0,2)>hh);
+   h+=`<div class="hr"><span>${hr}:00</span><div>${its.map(itemH).join('')}${!its.length&&busy.length?`<div class="tm" style="padding:6px;color:#5b7fd9">┆ ${busy[0].t}</div>`:''}</div></div>`}}
+ if(t=='ai'){h=`<h2>💬 tONEに相談</h2>`+S.chat.map((m,ci)=>`<div class="msg ${m.b?'bot':'me'}">${m.t}${(m.p||[]).map(([tt,k,o,tm])=>`<div style="margin-top:6px;background:#faf7f2;border-radius:8px;padding:6px 8px;font-size:13px">✅ ${tt}<span class="tm">（${tm}）</span><br><button class="btn sm ghost" onclick="addOne('${tt}','${k}',${o},'${tm}',this,TODAY)">＋ カレンダーに入れる</button></div>`).join('')}${m.ev?`<button class="btn sm w" onclick="S.sheet={kind:'ev',p:'${m.ev}'};render()">飲み会を予定に入れて事前・事後タスクを作る</button>`:''}</div>`).join('')+
+  `<div class="chips">${['来週飲み会に行きたい','今日は疲れた','ゴミの日いつ？','休日どう過ごす？','妻の機嫌が悪い'].map(x=>`<button class="chip" onclick="ask('${x}')">${x}</button>`).join('')}</div><div style="height:70px"></div><div class="chatin"><input type="text" id="ci" placeholder="例：来週飲み会に行きたい" onkeydown="if(event.key=='Enter'){ask(this.value)}"><button class="btn" onclick="ask(document.getElementById('ci').value)">送信</button></div>
+  `}
+ if(t=='nayami')h=nayami();
+ if(t=='out')h=outH();
+ if(t=='rec')h=recH();
+ document.getElementById('app').innerHTML=h;sheetR()}
+// ===== sheets =====
+function sheetR(){const sh=S.sheet,el=document.getElementById('sh');if(!sh){el.innerHTML='';return}let h='';
+ if(sh.kind=='task')h=`<h2>家事テンプレートから追加</h2><div class="muted">${S.date}・時刻 <input type="time" id="tt" value="20:00"></div>`+Object.entries(TPL).map(([k,T])=>`<div class="card" onclick="addOne('${T.t}','${k}',0,document.getElementById('tt').value);S.sheet=null;render()"><b>${T.ic} ${T.t}</b> <span class="tm">${T.s.length}ステップ・約${T.s.reduce((a,s)=>a+s[1],0)}分</span><div class="tm">${T.s.map(s=>s[0].replace('{G}',gtoday(S.date))).join(' → ')}</div></div>`).join('')+
+  `<div class="card"><div class="lbl">🗑 ゴミの日設定</div>${[1,2,3,4,5,6,0].map(w=>`<div style="display:flex;justify-content:space-between;margin:4px 0">${WD[w]}曜 <select onchange="GARB[${w}]=this.value;L.set('garb',GARB)">${['','可燃ごみ','プラスチック','ビン・缶','資源（紙）'].map(o=>`<option ${GARB[w]==o?'selected':''} value="${o}">${o||'なし'}</option>`).join('')}</select></div>`).join('')}</div><button class="btn ghost w" onclick="S.sheet=null;render()">閉じる</button>`;
+ if(sh.kind=='ev'){const P=EVP[sh.p];h=`<h2>予定を追加</h2><div class="chips">${Object.entries(EVP).map(([k,p])=>`<button class="chip ${sh.p==k?'on':''}" onclick="S.sheet.p='${k}';sheetR()">${p.t}</button>`).join('')}</div>
+  <div class="card">日付 <b>${S.date}</b><br>時間 <input type="time" id="es" value="${P.s}"> 〜 <input type="time" id="ee" value="${P.e}"></div>
+  <button class="btn w" onclick="propose('${sh.p}',S.date,es.value,ee.value)">次へ：事前・事後タスクを提案</button><button class="btn ghost w" onclick="S.sheet=null;render()">やめる</button>`}
+ if(sh.kind=='prop'){const ev=sh.ev;const grp=ph=>`<div class="grp"><h4>${ph=='事前'?'⏪ 事前にやること':'⏩ 事後にやること'}</h4>${sh.list.map((x,i)=>x.ph!=ph?'':`<label style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px"><input type="checkbox" class="chk" ${x.on?'checked':''} onchange="S.sheet.list[${i}].on=this.checked"><span style="flex:1">${x.t}${x.k?' <span class="tm">（手順つき）</span>':''}</span><span class="tm">${dl(x.o)} ${x.tm}</span></label>`).join('')}</div>`;
+  h=`<h2>✨ ${ev.t}の前後を整えましょう</h2><div class="it ev"><b>📌 ${ev.t}</b><div class="tm">${ev.date} ${ev.start}〜${ev.end}</div></div><div class="muted" style="margin:6px 0">家庭への負担を先回りするタスクを提案しました。いらないものは外してください。</div>${grp('事前')}${grp('事後')}<button class="btn w" onclick="commitProp()">予定とタスクをカレンダーに入れる</button><button class="btn ghost w" onclick="S.sheet=null;render()">やめる</button>`}
+ el.innerHTML=`<div class="sheet" onclick="if(event.target==this){S.sheet=null;render()}"><div>${h}</div></div>`}
+Object.assign(GARB,JSON.parse(localStorage.getItem(K+'garb')||'{}'));
+// ===== 悩みから (v1 flow) =====
+function nayami(){if(S.e==null)return `<h2>いま、どんな感じ？</h2>`+E.map((e,i)=>`<div class="card entry" onclick="S.e=${i};S.qi=0;S.ans=[];S.ph='q';render()"><div class="ic">${e.ic}</div>${e.t}</div>`).join('');
+ const e=E[S.e];if(S.ph=='q'){const [qt,os]=e.q[S.qi];return `<button class="back" onclick="S.qi?S.qi--:S.e=null;render()">← もどる</button><div class="bar"><i style="width:${(S.qi+1)/e.q.length*100}%"></i></div><div class="muted">${e.t}</div><h2>${qt}</h2>`+os.map(o=>`<button class="opt" onclick="S.ans.push('${o}');if(++S.qi>=${e.q.length}){S.ph='a'};render()">${o}</button>`).join('')}
+ const a=e.a,tb=(t,tm,o)=>`<button class="btn sm ghost" onclick="addOne('${t}','',${o},'${tm}',this,TODAY)">＋ カレンダーに入れる（${o?'明日 ':''}${tm}）</button>`;
+ return `<button class="back" onclick="S.e=null;render()">← もどる</button><h2>${e.t}</h2><div class="card"><div class="lbl">いまの状況</div><div style="font-size:14px">${a.s}</div></div>
+ <div class="card"><div class="lbl">今夜の一手（1つ選べばOK）</div>${a.m.map(m=>`<div style="font-size:14px;margin-top:8px">${m}<br>${tb(m,'20:00',0)}</div>`).join('')}</div>
+ <div class="card"><div class="lbl">声かけの例</div><div style="font-size:14px">${a.v}</div></div><div class="card"><div class="lbl">明日やること</div><div style="font-size:14px">${a.t}<br>${tb(a.t,'08:00',1)}</div></div>`}
+// ===== お出かけ =====
+const OQ=[['age','子どもの年齢',['0〜1歳','2〜3歳','4〜6歳','小学生']],['time','使える時間',['1時間','2〜3時間','半日']],['wx','天気',['晴れ','雨']],['mv','移動手段',['徒歩','自転車','車','電車']],['hp','パパの余力',['けっこうある','ふつう','ほぼない']]];
+function outSug(o){const r=o.wx=='雨',low=o.hp=='ほぼない';const base=r?[
+ ['🏠','児童館・子育て支援センター','無料で室内遊び。同年代の子と遊べて、パパは見守り中心でOK','11:00',['タオル','着替え1組','飲み物','おやつ','上履き（必要な所）']],
+ ['🎪','屋内遊び場（キッズパーク）','雨でも体を動かせる。1〜2時間で満足度が高い','10:00',['靴下（滑り止め）','飲み物','着替え','小銭・利用料','ウェットティッシュ']],
+ ['📚','図書館の絵本コーナー','静かに過ごせて余力が少ない日にも。帰りに本を借りれば夜の寝かしつけにも','10:30',['図書カード','エコバッグ','飲み物','おむつ・おしりふき']]]:[
+ ['🌳','近所の公園（遊具＋砂場）','体力を使ってお昼寝・夜の寝つきがよくなる。気軽な定番','09:30',['飲み物','帽子','タオル','着替え','砂場セット','日焼け止め']],
+ ['🦆','大きめの公園でピクニック','レジャーシートでお昼まで。妻のひとり時間を長めに作れる','10:00',['レジャーシート','お弁当・おにぎり','飲み物','ウェットティッシュ','ゴミ袋','帽子']],
+ ['🏠','児童館・子育て支援センター','暑さ・寒さが厳しい日や、余力が少ない日の候補','10:30',['タオル','着替え','飲み物','おやつ']]];
+ if(low)base.unshift(base.splice(2,1)[0]);return base}
+function outH(){const o=S.out;let h=`<h2>🚲 お出かけを考える</h2><div class="muted">パートナーのひとり時間をつくる「一手」にもなります</div>`+OQ.map(([k,l,os])=>`<div class="lbl" style="margin-top:10px">${l}</div><div class="chips">${os.map(x=>`<button class="chip ${o[k]==x?'on':''}" onclick="S.out.${k}='${x}';S.out.res=0;render()">${x}</button>`).join('')}</div>`).join('');
+ const ok=OQ.every(q=>o[q[0]]);h+=`<button class="btn w" ${ok?'':'disabled style="opacity:.4"'} onclick="S.out.res=1;render();setTimeout(()=>document.getElementById('res').scrollIntoView(),10)">提案してもらう</button><div id="res"></div>`;
+ if(o.res)h+=`<h2>${o.wx}・${o.age}・${o.time}のおすすめ</h2>`+outSug(o).map((s,i)=>`<div class="card"><b>${s[0]} ${s[1]}</b><div class="muted">${s[2]}（${o.mv}で行ける範囲で）</div><div class="lbl" style="margin-top:8px">持ち物</div><div style="font-size:13px">${s[4].map(x=>'☐ '+x).join('　')}</div>
+ <div class="lbl" style="margin-top:8px">事前・事後</div><div style="font-size:13px">⏪ 前日：持ち物をまとめる・妻に「午前は休んでね」と共有<br>⏩ 帰宅後：洗濯物を出す・子どもと手洗い/お風呂</div><button class="btn sm w" onclick="addOut(${i},this)">予定に入れる（${s[3]}〜）</button></div>`).join('');return h}
+function addOut(i,btn){const o=S.out,s=outSug(o)[i],d=S.date,v=items();const dur={'1時間':1,'2〜3時間':2.5,'半日':4}[o.time];const [hh,mm]=s[3].split(':').map(Number);const em=hh*60+mm+dur*60;const end=String(Math.floor(em/60)).padStart(2,'0')+':'+String(em%60).padStart(2,'0');
+ const ev={id:uid(),date:d,start:s[3],end,type:'event',t:s[0]+' '+s[1]};v.push(ev);const L2=(dd,tm,t,steps,ph)=>v.push({id:uid(),date:dd,start:tm,type:'task',t,ic:'🎒',out:1,link:ev.id,lt:'お出かけ',ph,steps:steps.map(x=>({t:x,m:2,d:false}))});
+ L2(addD(d,-1),'21:00','持ち物をまとめる',s[4],'事前');L2(addD(d,-1),'21:30','妻に「午前は休んでね」と共有',[],'事前');L2(d,end,'帰宅後：洗濯物を出す・手洗い・お風呂',['汚れ物を洗濯かごへ','子どもと手洗い','水筒・弁当箱を洗う'],'事後');save(v);btn.textContent='✓ 予定と前後タスクを入れました';btn.className='btn sm w done'}
+// ===== 記録 (v1 2-tap) =====
+function recH(){const v=items().filter(i=>i.type=='task'&&i.date<=S.date&&i.date>=addD(S.date,-1));const R=L.get('rec',{});
+ return `<h2>✍ やった？どうだった？</h2><div class="muted">2タップで記録。次の提案に使われます</div>`+(v.length?v.map(x=>{const r=R[x.id]||{};return `<div class="card"><b>${x.ic||''} ${x.t}</b> <span class="tm">${x.date.slice(5)} ${x.start}</span><div class="chips">${['やった','できなかった'].map(a=>`<button class="chip ${r.a==a?'on':''}" onclick="rec('${x.id}','a','${a}')">${a}</button>`).join('')}</div>${r.a=='やった'?`<div class="chips">${['よかった','ふつう','微妙'].map(a=>`<button class="chip ${r.b==a?'on':''}" onclick="rec('${x.id}','b','${a}')">${a}</button>`).join('')}</div>`:''}${r.b?'<div class="tm">✓ 記録しました。家庭の記憶に保存</div>':''}</div>`}).join(''):'<div class="card muted">記録するタスクはありません</div>')}
+function rec(id,k,v){const R=L.get('rec',{});R[id]=R[id]||{};R[id][k]=v;L.set('rec',R);render()}
+render();
+</script></body></html>

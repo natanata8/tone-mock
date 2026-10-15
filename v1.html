@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="ja"><head>
+<meta name="robots" content="noindex"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tONE モック</title><style>
+:root{--bg:#f7f2ea;--card:#fff;--ink:#3a3330;--sub:#8a7f77;--acc:#d9825b;--acc2:#6f9a8d;--line:#eadfd2}
+*{box-sizing:border-box}body{margin:0;background:#e9e1d6;font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;color:var(--ink)}
+.app{max-width:420px;margin:0 auto;min-height:100vh;background:var(--bg);padding:16px 16px 90px;position:relative}
+h1{font-size:22px;margin:4px 0 0;letter-spacing:.5px}h1 b{color:var(--acc)}.tag{color:var(--sub);font-size:12px;margin-bottom:14px}
+h2{font-size:16px;margin:18px 0 8px}.card{background:var(--card);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px #0000000d}
+.entry{display:flex;gap:12px;align-items:center;cursor:pointer;font-size:15px}.entry .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:#fbeee6;flex:none}
+.today{background:linear-gradient(135deg,#fbe9dd,#e4efe9)}.muted{color:var(--sub);font-size:13px}
+.btn{display:block;width:100%;padding:13px;border:0;border-radius:12px;background:var(--acc);color:#fff;font-size:15px;font-weight:600;margin-top:8px;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn.sm{display:inline-block;width:auto;padding:7px 12px;font-size:13px;margin-top:8px}
+.btn.done{background:var(--acc2)}.opt{display:block;width:100%;text-align:left;padding:14px;margin-bottom:8px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:15px;cursor:pointer}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:8px 0 16px}.bar i{display:block;height:100%;background:var(--acc)}
+.back{background:none;border:0;color:var(--sub);font-size:14px;padding:0;cursor:pointer}
+.lbl{font-size:12px;font-weight:700;color:var(--acc2);margin-bottom:4px}.quote{background:#f6efe6;border-radius:10px;padding:10px;font-size:14px}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:#fff;display:flex;border-top:1px solid var(--line)}
+.nav button{flex:1;border:0;background:none;padding:10px 0 14px;font-size:12px;color:var(--sub);cursor:pointer}.nav button.on{color:var(--acc);font-weight:700}
+.task{display:flex;gap:10px;align-items:flex-start;font-size:14px}.task input{width:20px;height:20px;accent-color:var(--acc2)}.task.dn span{text-decoration:line-through;color:var(--sub)}
+.wave{display:flex;gap:6px;justify-content:center;height:60px;align-items:center;margin-top:120px}.wave i{width:8px;height:20px;background:var(--acc);border-radius:4px;animation:w 1s infinite ease-in-out}
+.wave i:nth-child(2){animation-delay:.15s}.wave i:nth-child(3){animation-delay:.3s}.wave i:nth-child(4){animation-delay:.45s}.wave i:nth-child(5){animation-delay:.6s}
+@keyframes w{50%{height:50px;background:var(--acc2)}}.center{text-align:center}.row{display:flex;gap:8px}.row .btn{flex:1}
+.trend{background:#e4efe9}.logo{display:inline-block;vertical-align:middle;margin-left:6px}
+</style></head><body><div class="app" id="app"></div>
+<nav class="nav" id="nav"></nav>
+<script>
+const E=[
+{id:'tense',ic:'🌧',t:'空気が重い・ちょっと揉めている',
+ q:[['気になっていること',['会話が少ない','言い方がきつい','家事の分担で揉めた','理由がわからない']],['子どもの年代',['0〜1歳','2〜3歳','4〜6歳','小学生']],['いまの余力',['けっこうある','ふつう','ほぼない']]],
+ a:{s:'寝不足や家事の積み重ねで、パートナーは「わかってほしい」気持ちがたまっているのかもしれません。どちらが悪いという話ではなく、少し疲れが重なっている状態です。',
+ m:['寝かしつけを代わって、30分ひとりの時間をつくる','洗い物と明日の準備を黙ってすませる','今日は何もしない。そっとしておくのもOK'],
+ v:'「最近ずっと任せきりだったね。今日はこっちやるから休んで」',t:'朝、ひとことだけ「昨日ありがとう」と伝える'}},
+{id:'free',ic:'🍻',t:'揉めずに自分の時間がほしい',
+ q:[['やりたいこと',['飲み会に行きたい','趣味・運動','ひとりで休みたい']],['いつ',['今週','来週','まだ未定']],['いまの余力',['けっこうある','ふつう','ほぼない']]],
+ a:{s:'パートナーは「行くこと」より「その日ひとりで回す負担」が気になるのかもしれません。先に負担を減らす段取りを見せると、話しやすくなります。',
+ m:['前日に夕飯を作り置きしておく（2食分）','当日の朝、お風呂・寝かしつけの段取りを紙に書く','今日は切り出さない。まず週末に家事を1つ多く持つ'],
+ v:'「来週木曜に飲み会があるんだけど、前の日にカレー作っておくし、その週末は午前中ひとりで出かけていいよ。どうかな？」',t:'カレンダーで候補日を見て、パートナーの予定と重ならないか確認'}},
+{id:'rhythm',ic:'🌊',t:'家庭のリズムをもっとよくしたい',
+ q:[['気になる時間帯',['朝のバタバタ','夕方〜夕飯','寝かしつけ','週末']],['子どもの年代',['0〜1歳','2〜3歳','4〜6歳','小学生']],['いまの余力',['けっこうある','ふつう','ほぼない']]],
+ a:{s:'夕方〜夜に「誰が何をやるか」が決まっていないと、パートナーに負担が寄りがちかもしれません。仕組みを1つ決めるだけで回りやすくなります。',
+ m:['「お風呂はパパ」など担当を1つだけ固定する','明日の朝の準備（服・水筒）を夜のうちにやる','今日は何もしない。観察だけでもOK'],
+ v:'「夜のこと、どこか1つ自分の担当にしたいんだけど、どれが一番助かる？」',t:'担当を1つ決めて、1週間続けてみる'}},
+{id:'vague',ic:'💭',t:'うまく言えない',
+ q:[['いちばん近いのは',['なんとなくモヤモヤ','自分が疲れている','パートナーが疲れていそう','子どものこと']],['いつから',['今日','ここ数日','ずっと']],['いまの余力',['けっこうある','ふつう','ほぼない']]],
+ a:{s:'言葉にならないモヤモヤは、自分もパートナーも少し余裕が減っているサインかもしれません。まず自分の余白を少し戻すのが先です。',
+ m:['10分だけ散歩して頭を空にする','パートナーに「最近どう？」とだけ聞く','今日は何もしない。早めに寝るのもOK'],
+ v:'「なんか最近お互いバタバタだよね。何か減らせることあるかな」',t:'気になったことを1行メモしてtONEに話す'}}];
+let S={view:'home',e:null,qi:0,ans:[]};
+const L={get:k=>JSON.parse(localStorage.getItem('tone_'+k)||'[]'),set:(k,v)=>localStorage.setItem('tone_'+k,JSON.stringify(v))};
+const $=document.getElementById('app');
+function go(v){S.view=v;render();scrollTo(0,0)}
+function addTask(t,b){const ts=L.get('tasks');if(!ts.some(x=>x.t==t))ts.push({t,d:false});L.set('tasks',ts);b.textContent='✓ 入れました';b.classList.add('done')}
+function render(){
+ const v=S.view;let h='';
+ if(v=='home'){const ts=L.get('tasks').filter(x=>!x.d);
+  h=`<h1>t<b>ONE</b><svg class="logo" width="40" height="14"><path d="M0 7 Q5 0 10 7 T20 7 T30 7 T40 7" fill="none" stroke="#d9825b" stroke-width="2"/></svg></h1><div class="tag">家族のリズムを整える</div>
+  <div class="card today"><div class="lbl">今日の一手</div>${ts.length?ts.slice(0,3).map(x=>'・'+x.t).join('<br>'):'<span class="muted">まだありません。下から相談してみましょう</span>'}</div>
+  <h2>いま、どんな感じ？</h2>`+E.map((e,i)=>`<div class="card entry" onclick="start(${i})"><div class="ic">${e.ic}</div>${e.t}</div>`).join('');}
+ if(v=='q'){const e=E[S.e],[qt,os]=e.q[S.qi];
+  h=`<button class="back" onclick="back()">← もどる</button><div class="bar"><i style="width:${(S.qi+1)/e.q.length*100}%"></i></div>
+  <div class="muted">${e.t}</div><h2>${qt}</h2>`+os.map(o=>`<button class="opt" onclick="pick('${o}')">${o}</button>`).join('');}
+ if(v=='think')h=`<div class="wave"><i></i><i></i><i></i><i></i><i></i></div><p class="center muted">トントン…整えています</p>`;
+ if(v=='ans'){const a=E[S.e].a,tb=t=>`<button class="btn sm ghost" onclick="addTask('${t}',this)">＋ タスクに入れる</button>`;
+  h=`<button class="back" onclick="go('home')">← ホーム</button><h2>${E[S.e].t}</h2>
+  <div class="card"><div class="lbl">いまの状況</div><div style="font-size:14px">${a.s}</div></div>
+  <div class="card"><div class="lbl">今夜の一手（1つ選べばOK）</div>${a.m.map(m=>`<div style="font-size:14px;margin-top:8px">${m}<br>${tb(m)}</div>`).join('')}</div>
+  <div class="card"><div class="lbl">声かけ例</div><div class="quote">${a.v}</div></div>
+  <div class="card"><div class="lbl">明日やること</div><div style="font-size:14px">${a.t}</div>${tb(a.t)}</div>`;}
+ if(v=='tasks'){const ts=L.get('tasks');
+  h=`<h2>タスク</h2>`+(ts.length?ts.map((x,i)=>`<div class="card task ${x.d?'dn':''}"><input type="checkbox" ${x.d?'checked':''} onchange="tog(${i})"><span>${x.t}</span></div>`).join(''):'<p class="muted">相談の回答から「タスクに入れる」で追加できます</p>')+
+  `<button class="btn ghost" onclick="go('rec')">翌日にすすむ（デモ）→</button>`;}
+ if(v=='rec'){const ts=L.get('tasks'),last=ts[ts.length-1],logs=L.get('logs');
+  h=`<h2>翌日の記録</h2>`;
+  if(last&&S.step!==2){h+=`<div class="card"><div class="lbl">昨日の一手、やった？</div><div style="font-size:14px">${last.t}</div>`+
+   (S.step==1?`<p class="muted">どうだった？</p><div class="row">${['よかった','ふつう','いまいち'].map(r=>`<button class="btn" onclick="rate('${r}')">${r}</button>`).join('')}</div>`:
+   `<div class="row"><button class="btn" onclick="did(1)">やった</button><button class="btn ghost" onclick="did(0)">できなかった</button></div>`)+`</div>`}
+  else if(!last)h+='<p class="muted">まだ一手がありません</p>';
+  h+=`<div class="card trend"><div class="lbl">うちの傾向</div><div style="font-size:14px">${logs.filter(l=>l.r=='よかった').length?'「先に負担を減らす段取り」がうちでは効きやすいようです':'記録がたまると、うちに効く一手が見えてきます'}</div></div>
+  <h2>記録</h2>`+(logs.length?logs.slice().reverse().map(l=>`<div class="card" style="font-size:14px">${l.did?'✅':'⏸'} ${l.t}<br><span class="muted">${l.r||'できなかった'}・${l.date}</span></div>`).join(''):'<p class="muted">まだ記録はありません</p>');}
+ $.innerHTML=h;
+ const n=[['home','🏠','ホーム'],['q','💬','相談'],['tasks','✅','タスク'],['rec','📈','記録']];
+ document.getElementById('nav').innerHTML=n.map(([k,i,t])=>`<button class="${(v==k||(k=='q'&&['think','ans'].includes(v)))?'on':''}" onclick="navTo('${k}')">${i}<br>${t}</button>`).join('');
+}
+function navTo(k){if(k=='q'){go(S.e!=null?'ans':'home');return}S.step=0;go(k)}
+function start(i){S.e=i;S.qi=0;go('q')}
+function back(){S.qi?(S.qi--,render()):go('home')}
+function pick(o){S.ans[S.qi]=o;if(S.qi<E[S.e].q.length-1){S.qi++;render()}else{go('think');setTimeout(()=>go('ans'),1400)}}
+function tog(i){const ts=L.get('tasks');ts[i].d=!ts[i].d;L.set('tasks',ts);render()}
+function did(d){if(d){S.step=1;render()}else save(0,null)}
+function rate(r){save(1,r)}
+function save(d,r){const ts=L.get('tasks'),last=ts[ts.length-1],logs=L.get('logs');logs.push({t:last.t,did:d,r,date:new Date().toLocaleDateString('ja-JP')});L.set('logs',logs);
+ if(d){last.d=true;L.set('tasks',ts)}S.step=2;render()}
+render();
+</script></body></html>
